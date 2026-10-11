@@ -1,0 +1,12 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Only the two allowed Google accounts can read or write anything.
+    // Keep in sync with PEOPLE in src/firebase.js.
+    match /{document=**} {
+      allow read, write: if request.auth != null
+        && request.auth.token.email_verified == true
+        && request.auth.token.email in ['josuesalazar1912@gmail.com', 'larissawawis@gmail.com'];
+    }
+  }
+}
